@@ -72,8 +72,21 @@ class RatingsSectionWidget extends StatelessWidget {
             spacing: 18,
             runSpacing: 12,
             crossAxisAlignment: WrapCrossAlignment.end,
-            children: ctrl.ratingsList?.map<Widget>((e) {
-                  return Container(
+            children: [
+              for (int i = 0; i < ctrl.ratingsList!.length; i++)
+                GestureDetector(
+                  onTap: () {
+                    ctrl.onChangedRatingCount(i);
+                    CustomBottomSheetsWidget.bottomsheet(
+                      onPressed: () => ctrl.onUpdateRatingCount(i),
+                      title: ctrl.ratingsList?[i].ratingName ?? '',
+                      subtitle: "Please, rate this rostrs “Looks” rating using stars below",
+                      child1: RatedButtonWidget(
+                        ratingCount: ctrl.updateRatingCount,
+                      ),
+                    );
+                  },
+                  child: Container(
                     height: 40,
                     width: MediaQuery.of(context).size.width / 2.3,
                     padding: const EdgeInsets.all(8),
@@ -86,7 +99,7 @@ class RatingsSectionWidget extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            e.ratingName ?? "",
+                            ctrl.ratingsList?[i].ratingName ?? "",
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
@@ -97,7 +110,7 @@ class RatingsSectionWidget extends StatelessWidget {
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          e.rated.toString(),
+                          ctrl.ratingsList?[i].rated.toString() ?? '',
                           style: const TextStyle(
                             fontSize: 16,
                             color: Colors.blue,
@@ -112,9 +125,9 @@ class RatingsSectionWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                  );
-                }).toList() ??
-                [],
+                  ),
+                ),
+            ],
           ),
           const SizedBox(height: 18),
           IconButtonWidget(
@@ -131,7 +144,7 @@ class RatingsSectionWidget extends StatelessWidget {
                       borderRadius: 20,
                       margin: const EdgeInsets.all(15),
                       colorText: Colors.white,
-                      duration: const Duration(seconds: 4),
+                      duration: const Duration(seconds: 2),
                       isDismissible: true,
                       dismissDirection: DismissDirection.horizontal,
                       forwardAnimationCurve: Curves.easeOutBack,
@@ -142,7 +155,9 @@ class RatingsSectionWidget extends StatelessWidget {
                       onPressed: () => ctrl.onPressedSaveRating(),
                       title: "Looks Rating",
                       subtitle: "Please, rate this rostrs “Looks” rating using stars below",
-                      child1: const RatedButtonWidget(),
+                      child1: RatedButtonWidget(
+                        ratingCount: ctrl.ratingCount,
+                      ),
                     );
                   }
                 },

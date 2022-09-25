@@ -64,6 +64,9 @@ class HomeController extends GetxController {
   /// Create Rating count
   int ratingCount = 0;
 
+  /// Update rating count
+  int updateRatingCount = 0;
+
   /// Service locator
   final _localSource = inject<LocalSource>();
 
@@ -247,7 +250,7 @@ class HomeController extends GetxController {
       borderRadius: 20,
       margin: const EdgeInsets.all(15),
       colorText: Colors.white,
-      duration: const Duration(seconds: 4),
+      duration: const Duration(seconds: 2),
       isDismissible: true,
       dismissDirection: DismissDirection.horizontal,
       forwardAnimationCurve: Curves.easeOutBack,
@@ -273,12 +276,15 @@ class HomeController extends GetxController {
   }
 
   void onPressedSaveRating() async {
+    print("Rating count: $ratingCount");
     _localSource.setRatings(
       Ratings(rated: ratingCount, ratingName: ratingNameEditingController.text),
     );
     ratingCount = 0;
     ratingNameEditingController.text = '';
     ratingsList = _localSource.getRatings();
+
+    _overallRating();
 
     Get.back();
 
@@ -292,7 +298,7 @@ class HomeController extends GetxController {
       borderRadius: 20,
       margin: const EdgeInsets.all(15),
       colorText: Colors.white,
-      duration: const Duration(seconds: 4),
+      duration: const Duration(seconds: 2),
       isDismissible: true,
       dismissDirection: DismissDirection.horizontal,
       forwardAnimationCurve: Curves.easeOutBack,
@@ -325,7 +331,7 @@ class HomeController extends GetxController {
         borderRadius: 20,
         margin: const EdgeInsets.all(15),
         colorText: Colors.white,
-        duration: const Duration(seconds: 4),
+        duration: const Duration(seconds: 2),
         isDismissible: true,
         dismissDirection: DismissDirection.horizontal,
         forwardAnimationCurve: Curves.easeOutBack,
@@ -343,7 +349,7 @@ class HomeController extends GetxController {
         borderRadius: 20,
         margin: const EdgeInsets.all(15),
         colorText: Colors.white,
-        duration: const Duration(seconds: 4),
+        duration: const Duration(seconds: 2),
         isDismissible: true,
         dismissDirection: DismissDirection.horizontal,
         forwardAnimationCurve: Curves.easeOutBack,
@@ -375,7 +381,7 @@ class HomeController extends GetxController {
         borderRadius: 20,
         margin: const EdgeInsets.all(15),
         colorText: Colors.white,
-        duration: const Duration(seconds: 4),
+        duration: const Duration(seconds: 2),
         isDismissible: true,
         dismissDirection: DismissDirection.horizontal,
         forwardAnimationCurve: Curves.easeOutBack,
@@ -393,7 +399,7 @@ class HomeController extends GetxController {
         borderRadius: 20,
         margin: const EdgeInsets.all(15),
         colorText: Colors.white,
-        duration: const Duration(seconds: 4),
+        duration: const Duration(seconds: 2),
         isDismissible: true,
         dismissDirection: DismissDirection.horizontal,
         forwardAnimationCurve: Curves.easeOutBack,
@@ -439,7 +445,7 @@ class HomeController extends GetxController {
         borderRadius: 20,
         margin: const EdgeInsets.all(15),
         colorText: Colors.white,
-        duration: const Duration(seconds: 4),
+        duration: const Duration(seconds: 2),
         isDismissible: true,
         dismissDirection: DismissDirection.horizontal,
         forwardAnimationCurve: Curves.easeOutBack,
@@ -457,11 +463,52 @@ class HomeController extends GetxController {
         borderRadius: 20,
         margin: const EdgeInsets.all(15),
         colorText: Colors.white,
-        duration: const Duration(seconds: 4),
+        duration: const Duration(seconds: 2),
         isDismissible: true,
         dismissDirection: DismissDirection.horizontal,
         forwardAnimationCurve: Curves.easeOutBack,
       );
     }
+  }
+
+  void onChangedRatingCount(int index) {
+    updateRatingCount = ratingsList?[index].rated! ?? 0;
+
+    update();
+  }
+
+  onUpdateRatingCount(int index) {
+    _localSource.setRatings(
+      Ratings(
+        rated: updateRatingCount,
+        ratingName: ratingsList?[index].ratingName ?? '',
+      ),
+      isUpdate: true,
+      index: index,
+    );
+
+    ratingsList = _localSource.getRatings();
+
+    _overallRating();
+
+    Get.back();
+
+    /// GetX Snack Bar
+    Get.snackbar(
+      "Updated rating count",
+      "Successfully Updated rating count",
+      icon: const Icon(Icons.check, color: Colors.white),
+      snackPosition: SnackPosition.TOP,
+      backgroundColor: Colors.green,
+      borderRadius: 20,
+      margin: const EdgeInsets.all(15),
+      colorText: Colors.white,
+      duration: const Duration(seconds: 2),
+      isDismissible: true,
+      dismissDirection: DismissDirection.horizontal,
+      forwardAnimationCurve: Curves.easeOutBack,
+    );
+
+    update();
   }
 }

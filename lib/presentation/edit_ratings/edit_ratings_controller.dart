@@ -70,7 +70,7 @@ class EditRatingsController extends GetxController {
       borderRadius: 20,
       margin: const EdgeInsets.all(15),
       colorText: Colors.white,
-      duration: const Duration(seconds: 4),
+      duration: const Duration(seconds: 2),
       isDismissible: true,
       dismissDirection: DismissDirection.horizontal,
       forwardAnimationCurve: Curves.easeOutBack,

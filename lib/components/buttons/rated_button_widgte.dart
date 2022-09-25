@@ -4,7 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class RatedButtonWidget extends StatefulWidget {
-  const RatedButtonWidget({Key? key}) : super(key: key);
+  RatedButtonWidget({
+    Key? key,
+    this.ratingCount = 0,
+  }) : super(key: key);
+
+  int ratingCount;
 
   @override
   RatedButtonWidgetState createState() => RatedButtonWidgetState();
@@ -24,14 +29,19 @@ class RatedButtonWidgetState extends State<RatedButtonWidget> {
           return GestureDetector(
             onTap: () {
               setState(() {
+                widget.ratingCount = index + 1;
+                /// For updating ratingCount
                 ctrl.ratingCount = index + 1;
+
+                /// For updating updateRatingCount
+                ctrl.updateRatingCount = index + 1;
               });
             },
             child: Container(
               height: 40,
               width: 70,
               decoration: BoxDecoration(
-                color: index < ctrl.ratingCount ? AppColors.ratingButton : AppColors.deactiveRatingButton,
+                color: index < widget.ratingCount ? AppColors.ratingButton : AppColors.deactiveRatingButton,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Row(
@@ -39,13 +49,13 @@ class RatedButtonWidgetState extends State<RatedButtonWidget> {
                 children: [
                   Icon(
                     Icons.star,
-                    color: index < ctrl.ratingCount ? Colors.white : Colors.grey.withOpacity(0.7),
+                    color: index < widget.ratingCount ? Colors.white : Colors.grey.withOpacity(0.7),
                     size: 20,
                   ),
                   Text(
                     "${index + 1}",
                     style: TextStyle(
-                      color: index < ctrl.ratingCount ? Colors.white : Colors.grey.withOpacity(0.7),
+                      color: index < widget.ratingCount ? Colors.white : Colors.grey.withOpacity(0.7),
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
                     ),
